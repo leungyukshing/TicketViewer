@@ -2,13 +2,7 @@
     color: grey;
 }
 
-#prev {
-    color: grey;
-    border: 2px solid #000;
-    border-radius: 5px;
-}
-
-#next {
+.btn {
     color: grey;
     border: 2px solid #000;
     border-radius: 5px;

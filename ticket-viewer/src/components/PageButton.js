@@ -37,9 +37,9 @@ export default class PageButton extends Component {
     render() {
         return (
             <div className="change_page">
-                <span id="prev" onClick={this.setUp}>Prev</span>
+                <span className="btn" onClick={this.setUp}>Prev</span>
                 <span id="page_text">{this.state.pageNum}/{this.props.totalPage - 1}</span>
-                <span id="next" onClick={this.setNext}>Next</span>
+                <span className="btn" onClick={this.setNext}>Next</span>
             </div>
         )
     }
