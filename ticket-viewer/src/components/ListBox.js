@@ -23,6 +23,14 @@ class ListBox extends Component {
     componentWillMount() {
         console.log("request")
         // get total page
+        this.getCount();
+        
+        console.log("finish")
+        this.pageNext(this.state.goValue)
+    }
+
+    getCount = () => {
+        // request for total count
         axios({
             method: 'get',
             url: 'http://localhost:8080/getTicketsCount'
@@ -30,6 +38,7 @@ class ListBox extends Component {
             console.log(res)
             let ticketTotal = res.data.count.value;
             this.setState({totalPage: Math.floor(ticketTotal / 25) + 1, totalNum: ticketTotal})
+            // request for first page of data
             axios({
                 method: 'get',
                 url: 'http://localhost:8080/getTickets',
@@ -45,12 +54,10 @@ class ListBox extends Component {
             console.log(err)
             this.setState({hasError: true})
         })
-        
-        console.log("finish")
-        this.setState({totalPage: 2})
-        this.pageNext(this.state.goValue)
     }
+
     setPage(num) {
+        // request a new page of data
         axios({
             method: 'get',
             url: 'http://localhost:8080/getTickets',
@@ -71,22 +78,29 @@ class ListBox extends Component {
 
 
     render() {
-        return (
-            <div className="main">
-                <div className="top_bar"></div>
-                <div className="lists">
-                    <ul>
-                       {this.state.tickets.map(function(cont) {                           
-                           //console.log(cont)
-                           return <List {...cont}/>
-                       })}
-                    </ul>
-
-                    <PageButton {...this.state } pageNext={this.pageNext}/>
-                    <span>Total: {this.state.totalNum}</span>
+        if (!this.state.hasError) {
+            return (
+                <div className="main">
+                    <div className="lists">
+                        <ul>
+                           {this.state.tickets.map(function(cont) {                           
+                               //console.log(cont)
+                               return <List {...cont}/>
+                           })}
+                        </ul>
+    
+                        <PageButton {...this.state } pageNext={this.pageNext}/>
+                        <span>Total: {this.state.totalNum}</span>
+                    </div>
                 </div>
-            </div>
-        )
+            )
+        } else {
+            // error handling
+            return (
+                <span>Sorry, the server is not working, please check your token</span>
+            )
+        }
+        
     }
 }
 
